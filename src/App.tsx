@@ -1,12 +1,14 @@
-import { Button } from "./components/ui/button";
+import "@/App.css";
+import Dashboard from "@/pages/dashboard";
+import { Toaster } from "@/components/ui/sonner";
 
-const App = () => {
+function App() {
   return (
-    <div className="min-h-screen flex flex-col gap-2 justify-start items-center mt-20">
-      <h1 className="text-5xl">Hello Vasundhara Geo</h1>
-      <Button variant="default">Ready to start</Button>
+    <div className="App">
+      <Dashboard />
+      <Toaster />
     </div>
   );
-};
+}
 
 export default App;
