@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { FilterControls, MapComponent, DataTable } from "@/components";
+import {
+  FilterControls,
+  MapComponent,
+  DataTable,
+  ExportControls,
+} from "@/components";
 import { DashboardProvider } from "@/context/DashboardContext";
 import {
   ResizableHandle,
@@ -122,8 +127,7 @@ const DashboardContent = () => {
             {displayedProjects?.length} of {allProjects?.length} projects
           </div>
           <FilterControls />
-          {/* TO Be Done */}
-          {/* <ExportControls data={displayedProjects} /> */}
+          <ExportControls data={displayedProjects} />
         </div>
       </header>
       {/* Main Content */}
