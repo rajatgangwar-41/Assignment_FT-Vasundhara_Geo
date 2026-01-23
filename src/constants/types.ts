@@ -19,6 +19,7 @@ export type GeoProject = {
 
 export type ProjectID = string | null;
 export type Filter = { status: Status; search: string };
+export type SortConfig = { key: KeyColumn; direction: "asc" | "desc" };
 
 export type DashboardContextType = {
   selectedProjectId: ProjectID;
