@@ -4,7 +4,7 @@ A high-performance React-based geo data visualization dashboard that handles 500
 
 ## 🚀 Live Demo
 
-Access the dashboard at: `http://rajatgangwar-geodatadashboard.vercel.app`
+Access the dashboard at: `https://rajatgangwar-geodatadashboard.vercel.app/`
 
 ![Project Dashboard 1](/public/image.png)
 ![Project Dashboard 2](/public//image-1.png)
@@ -168,14 +168,14 @@ GET /geo-projects-data.json    # Fetch all 5000 projects
 
 ```json
 {
-  \"leaflet\": \"^1.9.4\",                    // Map rendering
-  \"react-leaflet\": \"^5.0.0-rc.2\",              // React bindings for Leaflet
-  \"@tanstack/react-virtual\": \"^3.13.18\",  // Table virtualization
-  \"papaparse\": \"^5.5.3\",                  // CSV export
-  \"file-saver\": \"^2.0.5\",                 // File download
-  \"react-resizable-panels\": \"^3.0.1\",     // Resizable layout
-  \"sonner\": \"^2.0.7\",                     // Toast notifications
-  \"shadcn/ui\": \"latest\"                   // UI component library
+  "leaflet": "^1.9.4", // Map rendering
+  "react-leaflet": "^5.0.0-rc.2", // React bindings for Leaflet
+  "@tanstack/react-virtual": "^3.13.18", // Table virtualization
+  "papaparse": "^5.5.3", // CSV export
+  "file-saver": "^2.0.5", // File download
+  "react-resizable-panels": "^3.0.1", // Resizable layout
+  "sonner": "^2.0.7", // Toast notifications
+  "shadcn/ui": "latest" // UI component library
 }
 ```
 
