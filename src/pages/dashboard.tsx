@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { FilterControls } from "@/components";
 import { DashboardProvider } from "@/context/DashboardContext";
 import { Globe, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -68,8 +69,11 @@ const DashboardContent = () => {
   useEffect(() => {
     (async () => {
       await fetchAllProjects();
-      filterAndSortProjects();
     })();
+  }, []);
+
+  useEffect(() => {
+    filterAndSortProjects();
   }, [filterAndSortProjects]);
 
   const fetchAllProjects = async () => {
@@ -108,11 +112,12 @@ const DashboardContent = () => {
           <div className="text-sm text-muted-foreground">
             {displayedProjects?.length} of {allProjects?.length} projects
           </div>
+          <FilterControls />
           {/* TO Be Done */}
-          {/* <FilterControls /> */}
           {/* <ExportControls data={displayedProjects} /> */}
         </div>
       </header>
+      <div className="mt-30">{JSON.stringify(displayedProjects)}</div>
 
       {/* Main Content */}
       <main className="">{/* TO BE DONE */}</main>
