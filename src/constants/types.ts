@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 
 export type Status = "Active" | "Completed" | "Pending" | "On Hold" | "All";
 export type KeyColumn =
@@ -20,6 +20,12 @@ export type GeoProject = {
 export type ProjectID = string | null;
 export type Filter = { status: Status; search: string };
 export type SortConfig = { key: KeyColumn; direction: "asc" | "desc" };
+export type DataTableProps = {
+  data: GeoProject[];
+  sortConfig: SortConfig;
+  onSort: (column: KeyColumn) => void;
+  parentRef: RefObject<HTMLDivElement | null>;
+};
 
 export type DashboardContextType = {
   selectedProjectId: ProjectID;

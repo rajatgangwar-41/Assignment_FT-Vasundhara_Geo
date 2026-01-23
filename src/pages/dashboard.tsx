@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { FilterControls, MapComponent } from "@/components";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { FilterControls, MapComponent, DataTable } from "@/components";
 import { DashboardProvider } from "@/context/DashboardContext";
 import {
   ResizableHandle,
@@ -9,28 +9,8 @@ import {
 import { Globe, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDashboard } from "@/hooks/useDashboard";
-import type { SortConfig, GeoProject } from "@/constants/types";
-
-const hardCodedProject: GeoProject[] = [
-  {
-    id: crypto.randomUUID().toString(),
-    project_name: "Delhi Transportation 1",
-    latitude: +(Math.random() * 100).toFixed(4),
-    longitude: +(Math.random() * 100).toFixed(4),
-    status: "Active",
-    // last_updated: "2025-11-23T03:42:16.088Z",
-    last_updated: Date.toString(),
-  },
-  {
-    id: crypto.randomUUID().toString(),
-    project_name: "Mumbai Transportation 1",
-    latitude: +(Math.random() * 100).toFixed(4),
-    longitude: +(Math.random() * 100).toFixed(4),
-    status: "Active",
-    // last_updated: "2025-11-23T03:42:16.088Z",
-    last_updated: Date.toString(),
-  },
-];
+import type { SortConfig, GeoProject, KeyColumn } from "@/constants/types";
+import { getMockData } from "@/lib/generateMockData";
 
 const DashboardContent = () => {
   const { filters } = useDashboard();
@@ -41,6 +21,26 @@ const DashboardContent = () => {
     key: "project_name",
     direction: "asc",
   });
+
+  const tableParentRef = useRef(null);
+
+  const fetchAllProjects = async () => {
+    try {
+      setLoading(true);
+      const response: GeoProject[] = await new Promise((res) =>
+        setTimeout(() => {
+          res(getMockData(5000));
+        }, 0),
+      );
+      setAllProjects(response);
+      toast.success(`Loaded ${response.length} projects`);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      toast.error("Failed to load projects");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filterAndSortProjects = useCallback(() => {
     let filtered = [...allProjects!];
@@ -80,6 +80,14 @@ const DashboardContent = () => {
     setDisplayedProjects(filtered);
   }, [filters, sortConfig, allProjects]);
 
+  const handleSort = (column: KeyColumn) => {
+    setSortConfig((prev) => ({
+      key: column,
+      direction:
+        prev.key === column && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
   useEffect(() => {
     (async () => {
       await fetchAllProjects();
@@ -89,19 +97,6 @@ const DashboardContent = () => {
   useEffect(() => {
     filterAndSortProjects();
   }, [filterAndSortProjects]);
-
-  const fetchAllProjects = async () => {
-    try {
-      setLoading(true);
-      setAllProjects(hardCodedProject);
-      toast.success(`Loaded ${hardCodedProject.length} projects`);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-      toast.error("Failed to load projects");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -143,11 +138,17 @@ const DashboardContent = () => {
           <ResizableHandle withHandle />
 
           <ResizablePanel defaultSize={50} minSize={30}>
-            <div className="mt-30">{JSON.stringify(displayedProjects)}</div>
-            {/* Data Table: To Be Done */}
+            <div className="h-full w-full overflow-auto" ref={tableParentRef}>
+              <DataTable
+                data={displayedProjects}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+                parentRef={tableParentRef}
+              />
+            </div>
           </ResizablePanel>
         </ResizablePanelGroup>
-      </main>{" "}
+      </main>
     </div>
   );
 };
