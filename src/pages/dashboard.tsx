@@ -43,7 +43,7 @@ const DashboardContent = () => {
   const fetchAllProjects = async () => {
     try {
       setLoading(true);
-      const response: GeoProject[] = await fetchProjects();
+      let response: GeoProject[] = await fetchProjects();
 
       // const normalized = response.map((p) => ({
       //   ...p,
@@ -51,7 +51,8 @@ const DashboardContent = () => {
       // }));
       // setAllProjects(normalized.slice(0, 100));
       // toast.success(`Loaded ${normalized.length} projects`);
-      setAllProjects(response.filter((_, ind) => ind % 50 === 0));
+      response = response.filter((_, ind) => ind % 50 === 0);
+      setAllProjects(response);
       toast.success(`Loaded ${response.length} projects`);
     } catch (error) {
       console.error("Error fetching projects:", error);
