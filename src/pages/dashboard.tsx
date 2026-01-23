@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { FilterControls } from "@/components";
+import { FilterControls, MapComponent } from "@/components";
 import { DashboardProvider } from "@/context/DashboardContext";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { Globe, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -10,6 +15,15 @@ const hardCodedProject: GeoProject[] = [
   {
     id: crypto.randomUUID().toString(),
     project_name: "Delhi Transportation 1",
+    latitude: +(Math.random() * 100).toFixed(4),
+    longitude: +(Math.random() * 100).toFixed(4),
+    status: "Active",
+    // last_updated: "2025-11-23T03:42:16.088Z",
+    last_updated: Date.toString(),
+  },
+  {
+    id: crypto.randomUUID().toString(),
+    project_name: "Mumbai Transportation 1",
     latitude: +(Math.random() * 100).toFixed(4),
     longitude: +(Math.random() * 100).toFixed(4),
     status: "Active",
@@ -117,10 +131,23 @@ const DashboardContent = () => {
           {/* <ExportControls data={displayedProjects} /> */}
         </div>
       </header>
-      <div className="mt-30">{JSON.stringify(displayedProjects)}</div>
-
       {/* Main Content */}
-      <main className="">{/* TO BE DONE */}</main>
+      <main className="flex-1 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal" className="h-full">
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="h-full w-full">
+              <MapComponent projects={displayedProjects} />
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={50} minSize={30}>
+            <div className="mt-30">{JSON.stringify(displayedProjects)}</div>
+            {/* Data Table: To Be Done */}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </main>{" "}
     </div>
   );
 };
