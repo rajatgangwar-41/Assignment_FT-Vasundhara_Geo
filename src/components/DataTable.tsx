@@ -95,7 +95,7 @@ export const DataTable = ({
               className={`
                 grid grid-cols-12 gap-4 px-4 py-3 border-b cursor-pointer
                 hover:bg-accent/10 transition-colors
-                ${isSelected ? "bg-accent/10 border-l-4 border-l-accent" : ""}
+                ${isSelected ? "bg-sky-400/30 border-l-4 border-l-accent" : ""}
               `}
               onClick={() => handleRowClick(project)}
             >
