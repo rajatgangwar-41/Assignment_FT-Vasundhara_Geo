@@ -1,4 +1,12 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import type { SortConfig, GeoProject, KeyColumn } from "@/constants/types";
+import {
+  useState,
+  useEffect,
+  useRef,
+  // useDeferredValue,
+  // useMemo,
+  useCallback,
+} from "react";
 import {
   FilterControls,
   MapComponent,
@@ -14,8 +22,9 @@ import {
 import { Globe, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDashboard } from "@/hooks/useDashboard";
-import type { SortConfig, GeoProject, KeyColumn } from "@/constants/types";
-import { getMockData } from "@/lib/generateMockData";
+import { fetchProjects } from "@/api/api";
+// import { useDebounce } from "@/hooks/useDebounce";
+// import { debounce } from "@tanstack/react-virtual";
 
 const DashboardContent = () => {
   const { filters } = useDashboard();
@@ -28,16 +37,21 @@ const DashboardContent = () => {
   });
 
   const tableParentRef = useRef(null);
+  // const debouncedSearch = debounce(window, filters.search, 500);
+  // const deferredSearch = useDeferredValue(debouncedSearch);
 
   const fetchAllProjects = async () => {
     try {
       setLoading(true);
-      const response: GeoProject[] = await new Promise((res) =>
-        setTimeout(() => {
-          res(getMockData(5000));
-        }, 0),
-      );
-      setAllProjects(response);
+      const response: GeoProject[] = await fetchProjects();
+
+      // const normalized = response.map((p) => ({
+      //   ...p,
+      //   _search: p.project_name.toLowerCase(),
+      // }));
+      // setAllProjects(normalized.slice(0, 100));
+      // toast.success(`Loaded ${normalized.length} projects`);
+      setAllProjects(response.filter((_, ind) => ind % 50 === 0));
       toast.success(`Loaded ${response.length} projects`);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -57,6 +71,13 @@ const DashboardContent = () => {
           p.status.toLowerCase() === filters.status.toLowerCase(),
       );
     }
+
+    //   // search filter (deferred)
+    // if (deferredSearch) {
+    //   result = result.filter((p) =>
+    //     p._search.includes(deferredSearch.toLowerCase()),
+    //   );
+    // }
 
     // Apply search filter
     if (filters.search) {

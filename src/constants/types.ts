@@ -36,3 +36,12 @@ export type DashboardContextType = {
   setProjects: Dispatch<SetStateAction<GeoProject[]>>;
   updateFilters: (newFilters: Partial<Filter>) => void;
 };
+
+export type APIType = {
+  Country: string;
+  "Capital City": string;
+  Latitude: number;
+  Longitude: number;
+  Population: number;
+  "Capital Type": string;
+};
